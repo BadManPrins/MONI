@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Will You Be My Valentine? 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Strakke font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(180deg,#ffdde1,#ee9ca7);
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow:hidden;
+      color:#111;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.95);
+      padding:50px;
+      border-radius:30px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,0.25);
+      width:380px;
+      position:relative;
+      z-index:1;
+    }
+
+    h1{
+      color:#111;
+      margin:0 0 18px;
+      font-weight:700;
+      letter-spacing:-0.02em;
+    }
+
+    p{
+      font-size:1.05em;
+      margin:0 0 26px;
+      color:#111;
+      line-height:1.45;
+    }
+
+    .buttons{
+      width:320px;
+      margin:30px auto 0;
+      display:flex;
+      justify-content:space-between;
+      position:relative;
+    }
+
+    button{
+      width:140px;
+      padding:14px 0;
+      border:none;
+      border-radius:30px;
+      background:#e91e63;   /* 🌸 roze zoals eerst */
+      color:white;
+      font-size:1.05em;
+      font-weight:600;
+      cursor:pointer;
+      user-select:none;
+      transition:background .2s ease;
+    }
+
+    /* YES groeit langzaam */
+    #yesBtn{
+      transform:scale(1);
+      animation:yesGrow 3.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes yesGrow{
+      from{ transform:scale(1); }
+      to{ transform:scale(1.18); }
+    }
+
+    #yesBtn:hover{
+      background:#c2185b;
+    }
+
+    /* NO knop blijft roze */
+    #noBtn{
+      background:#e91e63;
+      transition:
+        left 320ms cubic-bezier(.25,.9,.25,1),
+        top  320ms cubic-bezier(.25,.9,.25,1),
+        background .2s ease;
+      z-index:5;
+    }
+
+    #noBtn:hover{
+      background:#c2185b;
+    }
+
+    .hint{
+      margin-top:16px;
+      font-size:0.95em;
+      color:#111;
+      opacity:0.8;
+    }
+
+    .wipe{
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(0,0,0,0.15)),
+        linear-gradient(180deg,#ffdde1,#ee9ca7);
+      transform:translateY(110%);
+      transition:transform 650ms cubic-bezier(.2,.9,.2,1);
+      z-index:999;
+    }
+    .wipe.on{ transform:translateY(0%); }
+  </style>
+</head>
+<body>
+
+  <div class="wipe" id="wipe"></div>
+
+  <div class="card">
+    <h1>Hey Moni</h1>
+    <p>
+      So here comes the question…<br>
+      
+    </p>
+
+    <h1>Will you be my Valentine?</h1>
+
+    <div class="buttons">
+      <button id="yesBtn">YES 💖</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="hint">No seems a bit shy...😈</div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+    const wipe   = document.getElementById("wipe");
+
+    yesBtn.addEventListener("click", () => {
+      wipe.classList.add("on");
+      setTimeout(() => window.location.href = "yes.html", 650);
+    });
+
+    const MARGIN = 20;
+    const NEAR = 120;
+
+    function detachNo(){
+      const r = noBtn.getBoundingClientRect();
+      noBtn.style.position = "fixed";
+      noBtn.style.left = r.left + "px";
+      noBtn.style.top  = r.top  + "px";
+    }
+
+    function randomPosAwayFrom(mx, my){
+      const r = noBtn.getBoundingClientRect();
+      const maxX = window.innerWidth  - r.width  - MARGIN;
+      const maxY = window.innerHeight - r.height - MARGIN;
+
+      let x, y, d;
+      do{
+        x = Math.random() * maxX;
+        y = Math.random() * maxY;
+        d = Math.hypot(x - mx, y - my);
+      } while(d < NEAR * 1.5);
+
+      return { x, y };
+    }
+
+    function moveNo(mx, my){
+      const { x, y } = randomPosAwayFrom(mx, my);
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+    }
+
+    document.addEventListener("mousemove", (e) => {
+      const r = noBtn.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top  + r.height/2;
+      const d  = Math.hypot(e.clientX - cx, e.clientY - cy);
+
+      if(d < NEAR){
+        moveNo(e.clientX, e.clientY);
+      }
+    });
+
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      moveNo(t.clientX, t.clientY);
+    }, { passive:false });
+
+    window.addEventListener("load", detachNo);
+  </script>
+
+</body>
+</html>

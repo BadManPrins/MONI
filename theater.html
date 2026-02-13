@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine Night 🎥</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{ --pink1:#ffdde1; --pink2:#ee9ca7; --text:#111; --accent:#c2185b; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; min-height:100vh;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background: linear-gradient(180deg, var(--pink1), var(--pink2));
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+    }
+
+    .stage-bg{ position:fixed; inset:0;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255,255,255,0.35), rgba(255,255,255,0.0) 55%),
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), rgba(255,255,255,0.0) 40%),
+        radial-gradient(circle at 80% 25%, rgba(255,255,255,0.18), rgba(255,255,255,0.0) 45%);
+      pointer-events:none; z-index:0;
+    }
+    .vignette{ position:fixed; inset:0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 45%, rgba(0,0,0,0.20) 100%);
+      pointer-events:none; z-index:1;
+    }
+
+    .curtain{
+      position:fixed; top:0; bottom:0; width:22vw; min-width:160px;
+      background: linear-gradient(180deg, rgba(194,24,91,0.95), rgba(194,24,91,0.70));
+      box-shadow: inset -18px 0 40px rgba(0,0,0,0.25);
+      z-index:2; filter:saturate(1.05);
+    }
+    .curtain.left{ left:0; border-top-right-radius:40px; border-bottom-right-radius:40px; }
+    .curtain.right{ right:0; transform:scaleX(-1); border-top-right-radius:40px; border-bottom-right-radius:40px; }
+
+    .wrap{
+      position:relative; z-index:3;
+      width:min(980px, 92vw);
+      display:grid; gap:14px; place-items:center;
+      padding:22px 0;
+    }
+
+    h1{ margin:0; font-size: clamp(22px, 3.2vw, 34px); letter-spacing:-0.02em; text-align:center; }
+
+    .theater{
+      width:100%;
+      background: rgba(255,255,255,0.92);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .screen{
+      position:relative;
+      width:100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 22px;
+      overflow:hidden;
+      background:#000;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+    }
+
+    video{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .screen::after{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%);
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+
+    .caption{ margin:10px 6px 2px; text-align:center; font-size:14px; opacity:0.85; }
+
+    .backrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top: 10px;
+    }
+
+    .btn{
+      border:0;
+      background: rgba(194,24,91,0.10);
+      color:#7a0f37;
+      font-weight:700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .2s ease, background .2s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ transform: scale(1.05); background: rgba(194,24,91,0.16); }
+
+    .btn.primary{
+      background: rgba(233,30,99,0.18);
+      color:#7a0f37;
+    }
+
+    @media (max-width:700px){
+      .curtain{ width:14vw; min-width:90px; }
+      .theater{ padding:12px; border-radius:22px; }
+      .screen{ border-radius:16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage-bg"></div>
+  <div class="vignette"></div>
+  <div class="curtain left"></div>
+  <div class="curtain right"></div>
+
+  <div class="wrap">
+    <h1>Tonight’s little movie 🎥</h1>
+
+    <div class="theater">
+      <div class="screen">
+        <video controls playsinline preload="metadata">
+          <source src="valentine-video.mp4" type="video/mp4">
+          Your browser does not support the video.
+        </video>
+      </div>
+      <div class="caption">Press play when you’re ready 💖</div>
+
+      <div class="backrow">
+        <a class="btn" href="yes.html">← Back</a>
+        <a class="btn primary" href="valentines-day.html">Next →</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
